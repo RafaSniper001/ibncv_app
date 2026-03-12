@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'services/auth_service.dart';
 import 'splash_screen.dart';
 
 void main() async {
@@ -11,7 +13,14 @@ void main() async {
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplZml0dmRheGpqd3dpc3FrY2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMTY4MjQsImV4cCI6MjA4ODg5MjgyNH0.ZXJ7kI4ea82lTYWhELZOEcGKgyKZF6TyCma1sBaXGSY',
   );
 
-  runApp(const IBNCVApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
+      ],
+      child: const IBNCVApp(),
+    ),
+  );
 }
 
 class IBNCVApp extends StatelessWidget {

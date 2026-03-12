@@ -3,6 +3,7 @@ import 'package:video_player/video_player.dart';
 import 'dart:ui';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'widgets/app_drawer.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -170,29 +171,4 @@ class _SplashScreenState extends State<SplashScreen> {
      );
   }
 }
-
-// Scaffold do Menu para roles (Placeholder)
-class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: Colors.black.withOpacity(0.9),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: const [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Color(0xFFD32F2F)),
-            child: Text('Olá, Visitante', style: TextStyle(color: Colors.white, fontSize: 24)),
-          ),
-          ListTile(
-            leading: Icon(Icons.login, color: Colors.white),
-            title: Text('Fazer Login', style: TextStyle(color: Colors.white)),
-          ),
-          // Itens variam de acordo com "Roles" aqui depois
-        ],
-      ),
-    );
-  }
-}
+// Remover Scaffold falso AppDrawer
