@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:ui';
+import 'dart:ui';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'widgets/app_drawer.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,10 +16,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late VideoPlayerController _controller;
+  Map<String, dynamic>? _ultimoAviso;
 
   @override
   void initState() {
     super.initState();
+    // Buscar último aviso do pastor
+    _fetchUltimoAviso();
+
     // Inicia o vídeo de background (placeholder de adoração)
     _controller = VideoPlayerController.asset('assets/videos/adoration_bg.mp4')
       ..initialize().then((_) {
@@ -26,6 +32,25 @@ class _SplashScreenState extends State<SplashScreen> {
         _controller.play();
         setState(() {});
       });
+  }
+
+  Future<void> _fetchUltimoAviso() async {
+    try {
+       final response = await Supabase.instance.client
+           .from('avisos')
+           .select()
+           .order('criado_em', ascending: false)
+           .limit(1)
+           .maybeSingle();
+
+       if (response != null && mounted) {
+         setState(() {
+           _ultimoAviso = response;
+         });
+       }
+    } catch(e) {
+       debugPrint("Sem avisos no banco");
+    }
   }
 
   @override
@@ -90,7 +115,46 @@ class _SplashScreenState extends State<SplashScreen> {
                       letterSpacing: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 16),
+                  
+                  // CARD DINÂMICO - AVISO DO PASTOR
+                  if (_ultimoAviso != null)
+                   Container(
+                     width: double.infinity,
+                     padding: const EdgeInsets.all(16),
+                     decoration: BoxDecoration(
+                       color: const Color(0xFFD32F2F).withOpacity(0.85),
+                       borderRadius: BorderRadius.circular(15),
+                       border: Border.all(color: const Color(0xFFFFC107).withOpacity(0.5)),
+                       boxShadow: [
+                         BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 10)
+                       ]
+                     ),
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         Row(
+                           children: [
+                             const Icon(Icons.record_voice_over, color: Color(0xFFFFC107), size: 18),
+                             const SizedBox(width: 8),
+                             Text('Mensagem Pastoral', style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 12, color: const Color(0xFFFFC107))),
+                           ],
+                         ),
+                         const SizedBox(height: 8),
+                         Text(
+                           '"\${_ultimoAviso!['mensagem']}"',
+                           style: GoogleFonts.inter(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.white),
+                         ),
+                         if (_ultimoAviso!['referencia'] != null && _ultimoAviso!['referencia'].toString().isNotEmpty)
+                           Padding(
+                             padding: const EdgeInsets.only(top: 8.0),
+                             child: Text('- \${_ultimoAviso!['referencia']}', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white70)),
+                           )
+                       ],
+                     ),
+                   ),
+
+                  const SizedBox(height: 16),
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 2,

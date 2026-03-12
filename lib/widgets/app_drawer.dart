@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
+import '../services/auth_service.dart';
 import '../models/app_role.dart';
 import '../screens/login_screen.dart';
+import '../screens/painel_pastor.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -98,7 +100,10 @@ class AppDrawer extends StatelessWidget {
     // Pastor
     if (role.index <= AppRole.pastor.index) {
       items.add(const Divider(color: Colors.white12));
-      items.add(_buildItem(Icons.send, 'Enviar Push Inteligente', () {}));
+      items.add(_buildItem(Icons.send, 'Enviar Push Inteligente', () {
+        Navigator.pop(context); // Fecha o drawer
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const PainelPastorScreen()));
+      }));
       items.add(_buildItem(Icons.record_voice_over, 'Bom Dia Pastoral', () {}));
     }
 
