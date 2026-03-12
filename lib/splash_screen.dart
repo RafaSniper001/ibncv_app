@@ -142,13 +142,13 @@ class _SplashScreenState extends State<SplashScreen> {
                          ),
                          const SizedBox(height: 8),
                          Text(
-                           '"\${_ultimoAviso!['mensagem']}"',
+                           '"\${_ultimoAviso!["mensagem"]}"',
                            style: GoogleFonts.inter(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.white),
                          ),
-                         if (_ultimoAviso!['referencia'] != null && _ultimoAviso!['referencia'].toString().isNotEmpty)
+                         if (_ultimoAviso!["referencia"] != null && _ultimoAviso!["referencia"].toString().isNotEmpty)
                            Padding(
                              padding: const EdgeInsets.only(top: 8.0),
-                             child: Text('- \${_ultimoAviso!['referencia']}', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white70)),
+                             child: Text('- \${_ultimoAviso!["referencia"]}', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white70)),
                            )
                        ],
                      ),
