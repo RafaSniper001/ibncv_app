@@ -4,6 +4,8 @@ import '../services/auth_service.dart';
 import '../models/app_role.dart';
 import '../screens/login_screen.dart';
 import '../screens/painel_pastor.dart';
+import '../screens/biblia_screen.dart';
+import '../screens/oracao_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -63,14 +65,20 @@ class AppDrawer extends StatelessWidget {
     List<Widget> items = [];
 
     // Todos podem ver
-    items.add(_buildItem(Icons.book, 'Bíblia Completa', () {}));
+    items.add(_buildItem(Icons.menu_book, 'Bíblia Sagrada', () {
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const BibliaScreen()));
+    }));
     items.add(_buildItem(Icons.location_on, 'Localização & Horários', () {}));
 
     if (role == AppRole.visitante) return items;
 
     // Membro em diante
     items.add(const Divider(color: Colors.white12));
-    items.add(_buildItem(Icons.volunteer_activism, 'Pedir Oração', () {}));
+    items.add(_buildItem(Icons.volunteer_activism, 'Pedir Oração', () {
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const OracaoScreen()));
+    }));
     items.add(_buildItem(Icons.calendar_today, 'Minha Escala', () {}));
     items.add(_buildItem(Icons.how_to_reg, 'Check-in Culto', () {}));
 

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:ui';
-import 'dart:ui';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'widgets/app_drawer.dart';
+import 'screens/biblia_screen.dart';
+import 'screens/oracao_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -164,11 +165,11 @@ class _SplashScreenState extends State<SplashScreen> {
                       physics: const NeverScrollableScrollPhysics(), // Evitar rolagem se couber
                       children: [
                         _buildGlassCard(context, Icons.menu_book, 'Bíblia', onTap: () {
-                           // Lógica da Bíblia Pública
-                        }),
+  Navigator.push(context, MaterialPageRoute(builder: (context) => const BibliaScreen()));
+}),
                         _buildGlassCard(context, Icons.volunteer_activism, 'Orações', onTap: () {
-                           // Lógica de Pedidos
-                        }),
+  Navigator.push(context, MaterialPageRoute(builder: (context) => const OracaoScreen()));
+}),
                         _buildGlassCard(context, Icons.video_library, 'Cultos & Mídia', onTap: () {
                            // Lógica de Mídia
                         }),

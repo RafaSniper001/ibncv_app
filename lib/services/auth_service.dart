@@ -79,4 +79,19 @@ class AuthService extends ChangeNotifier {
   Future<void> signOut() async {
     await _supabase.auth.signOut();
   }
+
+  // Enviar pedido de oração para o Supabase
+  Future<bool> enviarPedidoOracao(String nome, String pedido) async {
+    try {
+      await _supabase.from('pedidos_oracao').insert({
+        'user_id': _user?.id,
+        'nome': nome,
+        'pedido': pedido,
+      });
+      return true;
+    } catch (e) {
+      debugPrint('Erro ao enviar pedido: $e');
+      return false;
+    }
+  }
 }
