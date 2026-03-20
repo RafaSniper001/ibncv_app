@@ -28,8 +28,15 @@ class _BibliaScreenState extends State<BibliaScreen> {
     '3 João': 1, 'Judas': 1, 'Apocalipse': 22,
   };
 
+  final Map<String, String> _versoes = {
+    'NVI (Nova Versão Internacional)': 'NVIPT',
+    'ARA (Almeida Revista Atualizada)': 'ARA',
+    'ARC (Almeida Revista Corrigida)': 'ARC',
+  };
+
   late String _livroSelecionado; 
   late int _capituloSelecionado;
+  late String _versaoSelecionada;
   
   bool _isLoading = false;
   String _bibliaContent = '';
@@ -39,6 +46,7 @@ class _BibliaScreenState extends State<BibliaScreen> {
     super.initState();
     _livroSelecionado = _capitulosPorLivro.keys.first;
     _capituloSelecionado = 1;
+    _versaoSelecionada = _versoes.keys.first;
     _carregarCapitulo();
   }
 
@@ -49,15 +57,18 @@ class _BibliaScreenState extends State<BibliaScreen> {
     });
 
     try {
-      // Converte espaços para + como esperado pela bible-api
-      String livroFormatado = Uri.encodeComponent(_livroSelecionado);
-      final url = Uri.parse('https://bible-api.com/$livroFormatado+$_capituloSelecionado?translation=almeida');
+      // Bolls Life API usa o ID numérico do livro (1 a 66)
+      int numeroLivro = _capitulosPorLivro.keys.toList().indexOf(_livroSelecionado) + 1;
+      String versaoKey = _versoes[_versaoSelecionada]!;
+      
+      final url = Uri.parse('https://bolls.life/get-chapter/$versaoKey/$numeroLivro/$_capituloSelecionado/');
       
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final verses = data['verses'] as List;
+        // A API retorna JSON como uma lista usando caracteres Unicode puros
+        final data = json.decode(utf8.decode(response.bodyBytes));
+        final verses = data as List;
         
         StringBuffer buffer = StringBuffer();
         for (var verse in verses) {
@@ -98,57 +109,82 @@ class _BibliaScreenState extends State<BibliaScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             color: Colors.black.withOpacity(0.5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
               children: [
-                Expanded(
-                  flex: 3,
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: _livroSelecionado,
-                    dropdownColor: Colors.black87,
-                    items: _capitulosPorLivro.keys.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: const TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      if (newValue != null && newValue != _livroSelecionado) {
-                        setState(() {
-                          _livroSelecionado = newValue;
-                          // Valida se o capítulo selecionado ainda é válido para o novo livro
-                          if (_capituloSelecionado > (_capitulosPorLivro[newValue] ?? 1)) {
-                            _capituloSelecionado = 1;
-                          }
-                        });
-                        _carregarCapitulo();
-                      }
-                    },
-                  ),
+                // Linha para a Versão
+                DropdownButton<String>(
+                  isExpanded: true,
+                  value: _versaoSelecionada,
+                  dropdownColor: Colors.black87,
+                  items: _versoes.keys.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value, style: const TextStyle(color: Colors.white, fontSize: 14)),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    if (newValue != null && newValue != _versaoSelecionada) {
+                      setState(() {
+                        _versaoSelecionada = newValue;
+                      });
+                      _carregarCapitulo();
+                    }
+                  },
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  flex: 2,
-                  child: DropdownButton<int>(
-                    isExpanded: true,
-                    value: _capituloSelecionado,
-                    dropdownColor: Colors.black87,
-                    items: List.generate(totalCapitulos, (index) => index + 1).map((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text('Cap $value', style: const TextStyle(color: Colors.white)),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      if (newValue != null && newValue != _capituloSelecionado) {
-                        setState(() {
-                          _capituloSelecionado = newValue;
-                        });
-                        _carregarCapitulo();
-                      }
-                    },
-                  ),
+                const SizedBox(height: 8),
+                // Linha para Livro e Capítulo
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: _livroSelecionado,
+                        dropdownColor: Colors.black87,
+                        items: _capitulosPorLivro.keys.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value, style: const TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          if (newValue != null && newValue != _livroSelecionado) {
+                            setState(() {
+                              _livroSelecionado = newValue;
+                              if (_capituloSelecionado > (_capitulosPorLivro[newValue] ?? 1)) {
+                                _capituloSelecionado = 1;
+                              }
+                            });
+                            _carregarCapitulo();
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      flex: 2,
+                      child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: _capituloSelecionado,
+                        dropdownColor: Colors.black87,
+                        items: List.generate(totalCapitulos, (index) => index + 1).map((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text('Cap $value', style: const TextStyle(color: Colors.white)),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          if (newValue != null && newValue != _capituloSelecionado) {
+                            setState(() {
+                              _capituloSelecionado = newValue;
+                            });
+                            _carregarCapitulo();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
