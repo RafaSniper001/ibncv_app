@@ -83,15 +83,20 @@ class AuthService extends ChangeNotifier {
   // Enviar pedido de oração para o Supabase
   Future<bool> enviarPedidoOracao(String nome, String pedido) async {
     try {
-      await _supabase.from('pedidos_oracao').insert({
-        'user_id': _user?.id,
+      final Map<String, dynamic> insertData = {
         'nome': nome,
         'pedido': pedido,
-      });
+      };
+      
+      if (_user?.id != null) {
+        insertData['user_id'] = _user!.id;
+      }
+      
+      await _supabase.from('pedidos_oracao').insert(insertData);
       return true;
     } catch (e) {
       debugPrint('Erro ao enviar pedido: $e');
-      return false;
+      throw Exception(e.toString());
     }
   }
 }
