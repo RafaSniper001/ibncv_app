@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'widgets/app_drawer.dart';
 import 'screens/biblia_screen.dart';
 import 'screens/oracao_screen.dart';
+import 'widgets/glass_container.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -110,10 +111,21 @@ class _SplashScreenState extends State<SplashScreen> {
                    Text(
                     "BEM-VINDO À SUA \nCASA ESPIRITUAL",
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.cinzel(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "UMA IGREJA ACOLHEDORA",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                       letterSpacing: 1.2,
+                      color: const Color(0xFFFFC107),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -191,32 +203,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget _buildGlassCard(BuildContext context, IconData icon, String title, {required VoidCallback onTap}) {
      return GestureDetector(
        onTap: onTap,
-       child: GlassmorphicContainer(
+       child: GlassContainer(
          width: double.infinity,
          height: double.infinity,
          borderRadius: 20,
          blur: 15,
-         alignment: Alignment.center,
-         border: 1.5,
-         linearGradient: LinearGradient(
-             begin: Alignment.topLeft,
-             end: Alignment.bottomRight,
-             colors: [
-               const Color(0xFFffffff).withOpacity(0.1),
-               const Color(0xFFFFFFFF).withOpacity(0.05),
-             ],
-             stops: const [
-               0.1,
-               1,
-             ]),
-         borderGradient: LinearGradient(
-           begin: Alignment.topLeft,
-           end: Alignment.bottomRight,
-           colors: [
-             const Color(0xFFffffff).withOpacity(0.5),
-             const Color((0xFFFFFFFF)).withOpacity(0.5),
-           ],
-         ),
+         padding: const EdgeInsets.all(0),
          child: Column(
            mainAxisAlignment: MainAxisAlignment.center,
            children: [
@@ -224,9 +216,9 @@ class _SplashScreenState extends State<SplashScreen> {
              const SizedBox(height: 12),
              Text(
                title,
-               style: const TextStyle(
+               style: GoogleFonts.inter(
                  fontSize: 16,
-                 fontWeight: FontWeight.w600,
+                 fontWeight: FontWeight.bold,
                  color: Colors.white,
                ),
              ),
