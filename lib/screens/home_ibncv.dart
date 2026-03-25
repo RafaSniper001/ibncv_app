@@ -22,13 +22,15 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset(
-      'assets/videos/adoration_bg.mp4'
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse('https://assets.mixkit.co/videos/preview/mixkit-fire-in-a-fireplace-1064-large.mp4')
     )..initialize().then((_) {
         _controller.setLooping(true);
         _controller.setVolume(0);
         _controller.play();
         setState(() {});
+      }).catchError((error) {
+        debugPrint("Erro ao carregar video: $error");
       });
   }
 
