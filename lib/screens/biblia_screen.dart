@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/glass_container.dart';
+import '../theme/tema_ibncv.dart';
 
 class BibliaScreen extends StatefulWidget {
   const BibliaScreen({super.key});
@@ -153,19 +154,19 @@ class _BibliaScreenState extends State<BibliaScreen> {
                       borderRadius: 20,
                       padding: const EdgeInsets.all(16),
                       child: _isLoading
-                          ? const Center(child: CircularProgressIndicator(color: Color(0xFFD32F2F)))
+                          ? const Center(child: CircularProgressIndicator(color: AppTheme.ibncvRed))
                           : _erro != null
                               ? Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Icon(Icons.error_outline, color: Color(0xFFD32F2F), size: 48),
+                                      const Icon(Icons.error_outline, color: AppTheme.ibncvRed, size: 48),
                                       const SizedBox(height: 16),
                                       Text(_erro!, style: GoogleFonts.inter(color: Colors.white), textAlign: TextAlign.center),
                                       const SizedBox(height: 16),
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFFD32F2F),
+                                          backgroundColor: AppTheme.ibncvRed,
                                         ),
                                         onPressed: _carregarCapitulo,
                                         child: Text('Tentar Novamente', style: GoogleFonts.inter(color: Colors.white)),
@@ -190,7 +191,7 @@ class _BibliaScreenState extends State<BibliaScreen> {
                                                   style: GoogleFonts.inter(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
-                                                    color: const Color(0xFFFFC107), // Amarelo/Laranja
+                                                    color: AppTheme.ibncvOrange, // Laranja
                                                   ),
                                                 ),
                                                 TextSpan(

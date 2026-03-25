@@ -3,8 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'services/auth_service.dart';
-import 'screens/home_inpeace.dart';
-import 'theme/tema_inpeace_ibncv.dart';
+import 'screens/home_ibncv.dart';
+import 'theme/tema_ibncv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +32,8 @@ class IBNCVApp extends StatelessWidget {
     return MaterialApp(
       title: 'IBNCV',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.inPeaceTheme,
-      home: const HomeInPeace(),
+      theme: AppTheme.ibncvOfficialTheme,
+      home: const HomeIBNCV(),
     );
   }
 }

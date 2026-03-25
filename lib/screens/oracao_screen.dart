@@ -102,13 +102,23 @@ class _OracaoScreenState extends State<OracaoScreen> {
                           ElevatedButton(
                             onPressed: _enviando ? null : _enviarPedido,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFD32F2F),
-                              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                              backgroundColor: Colors.transparent, // Usaremos um Container com gradiente por baixo
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                             ),
-                            child: _enviando
-                                ? const CircularProgressIndicator(color: Colors.white)
-                                : const Text('ENVIAR PEDIDO', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(colors: [Color(0xFFD32F2F), Color(0xFFFF9800)]),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                alignment: Alignment.center,
+                                child: _enviando
+                                    ? const CircularProgressIndicator(color: Colors.white)
+                                    : const Text('ENVIAR PEDIDO', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                              ),
+                            ),
                           ),
                         ],
                       ),
