@@ -3,7 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'services/auth_service.dart';
-import 'splash_screen.dart';
+import 'screens/home_inpeace.dart';
+import 'theme/tema_inpeace_ibncv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,17 +32,8 @@ class IBNCVApp extends StatelessWidget {
     return MaterialApp(
       title: 'IBNCV',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: const Color(0xFFD32F2F), // Vermelho Oficial
-        scaffoldBackgroundColor: Colors.black,
-        colorScheme: const ColorScheme.dark(
-            primary: Color(0xFFD32F2F), secondary: Color(0xFFFFC107)), // Amarelo Oficial
-        textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.white),
-        ),
-      ),
-      home: const SplashScreen(),
+      theme: AppTheme.inPeaceTheme,
+      home: const HomeInPeace(),
     );
   }
 }
