@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 import 'biblia_screen.dart';
 import 'oracao_screen.dart';
+import 'login_screen.dart';
+import 'contribua_screen.dart';
+import '../widgets/app_drawer.dart';
 
 class HomeIBNCV extends StatefulWidget {
   const HomeIBNCV({super.key});
@@ -14,11 +17,11 @@ class HomeIBNCV extends StatefulWidget {
 
 class _HomeIBNCVState extends State<HomeIBNCV> {
   late VideoPlayerController _controller;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    // Vídeo de fundo em loop oficial cristão
     _controller = VideoPlayerController.asset(
       'assets/videos/adoration_bg.mp4'
     )..initialize().then((_) {
@@ -38,7 +41,9 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
+      drawer: const AppDrawer(),
       body: Stack(
         children: [
           // 1. Vídeo de Fundo (100% da tela)
@@ -52,7 +57,7 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
               ),
             ),
           ),
-          // 2. Overlay Escuro Gradiente (Para leitura dos ícones)
+          // 2. Overlay Escuro Gradiente
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -66,7 +71,7 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
               ),
             ),
           ),
-          // 3. Conteúdo da Interface (IBNCV Oficial)
+          // 3. Conteúdo da Interface
           SafeArea(
             child: Column(
               children: [
@@ -76,8 +81,14 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(Icons.menu, color: Colors.white, size: 28),
-                      const Icon(Icons.account_circle_outlined, color: Colors.white, size: 28),
+                      InkWell(
+                        onTap: () => _scaffoldKey.currentState?.openDrawer(),
+                        child: const Icon(Icons.menu, color: Colors.white, size: 28),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen())),
+                        child: const Icon(Icons.account_circle_outlined, color: Colors.white, size: 28),
+                      ),
                     ],
                   ),
                 ),
@@ -132,7 +143,7 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
                       _buildIbncvIcon(Icons.campaign, 'AVISOS', const Color(0xFFFFEB3B)),
                       _buildIbncvIcon(Icons.menu_book, 'BÍBLIA', Colors.white, destination: const BibliaScreen()),
                       _buildIbncvIcon(Icons.volunteer_activism, 'ORAÇÕES', const Color(0xFFD32F2F), destination: const OracaoScreen()),
-                      _buildIbncvIcon(Icons.favorite, 'CONTRIBUA', const Color(0xFFFF9800)),
+                      _buildIbncvIcon(Icons.favorite, 'CONTRIBUA', const Color(0xFFFF9800), destination: const ContribuaScreen()),
                       _buildIbncvIcon(Icons.event, 'EVENTOS', const Color(0xFFFFEB3B)),
                       _buildIbncvIcon(Icons.groups, 'DEPARTAMENTOS', Colors.white),
                       _buildIbncvIcon(Icons.more_horiz, 'MAIS', Colors.white54),

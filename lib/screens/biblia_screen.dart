@@ -103,27 +103,79 @@ class _BibliaScreenState extends State<BibliaScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: _livroSelecionado,
-                              dropdownColor: const Color(0xFF121212).withOpacity(0.9),
-                              icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-                              items: _livros.map((String value) => DropdownMenuItem<String>(
-                                  value: value, 
-                                  child: Text(value, style: GoogleFonts.inter(color: Colors.white), overflow: TextOverflow.ellipsis)
-                              )).toList(),
-                              onChanged: (newValue) {
-                                if (newValue != null) {
-                                  setState(() { _livroSelecionado = newValue; _capituloSelecionado = 1; });
-                                  _carregarCapitulo();
-                                }
-                              },
-                            ),
+                          flex: 2,
+                          child: Autocomplete<String>(
+                            initialValue: TextEditingValue(text: _livroSelecionado),
+                            optionsBuilder: (TextEditingValue textEditingValue) {
+                              if (textEditingValue.text.isEmpty) {
+                                return _livros;
+                              }
+                              return _livros.where((String option) => 
+                                option.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+                            },
+                            onSelected: (String selection) {
+                              setState(() {
+                                _livroSelecionado = selection;
+                                _capituloSelecionado = 1;
+                              });
+                              _carregarCapitulo();
+                              FocusScope.of(context).unfocus(); // Oculta o teclado
+                            },
+                            fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
+                              // Sincronizar o controlador com o valor real se trocado externamente 
+                              // (apenas para garantir que ao entrar já esteja certo)
+                              if (controller.text.isEmpty && !focusNode.hasFocus) {
+                                controller.text = _livroSelecionado;
+                              }
+                              return TextField(
+                                controller: controller,
+                                focusNode: focusNode,
+                                onEditingComplete: onEditingComplete,
+                                style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
+                                decoration: const InputDecoration(
+                                  hintText: 'Buscar livro...',
+                                  hintStyle: TextStyle(color: Colors.white54),
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(Icons.search, color: Colors.white, size: 20),
+                                  isDense: true,
+                                ),
+                              );
+                            },
+                            optionsViewBuilder: (context, onSelected, options) {
+                              return Align(
+                                alignment: Alignment.topLeft,
+                                child: Material(
+                                  color: Colors.black.withOpacity(0.95),
+                                  borderRadius: BorderRadius.circular(10),
+                                  elevation: 4,
+                                  child: SizedBox(
+                                    width: 180, // Largura levemente maior
+                                    height: 250,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      itemCount: options.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        final String option = options.elementAt(index);
+                                        return InkWell(
+                                          onTap: () {
+                                            onSelected(option);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Text(option, style: const TextStyle(color: Colors.white)),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 8),
                         Expanded(
+                          flex: 1,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<int>(
                               isExpanded: true,
@@ -132,7 +184,7 @@ class _BibliaScreenState extends State<BibliaScreen> {
                               icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                               items: List.generate(150, (index) => index + 1).map((int value) => DropdownMenuItem<int>(
                                   value: value, 
-                                  child: Text('Capítulo $value', style: GoogleFonts.inter(color: Colors.white), overflow: TextOverflow.ellipsis)
+                                  child: Text('Cap $value', style: GoogleFonts.inter(color: Colors.white), overflow: TextOverflow.ellipsis)
                               )).toList(),
                               onChanged: (newValue) {
                                 if (newValue != null) {
