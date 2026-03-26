@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 
 class IconeFuturista extends StatelessWidget {
   final String texto;
-  final String imagem;
+  final IconData icone;
+  final Color corIcone;
   final VoidCallback? onTap;
 
   const IconeFuturista({
     Key? key,
     required this.texto,
-    required this.imagem,
+    required this.icone,
+    this.corIcone = Colors.white,
     this.onTap,
   }) : super(key: key);
 
@@ -45,14 +47,20 @@ class IconeFuturista extends StatelessWidget {
                 ),
               ],
             ),
-            child: Image.asset(
-              imagem,
+            child: SizedBox(
               width: 60,
               height: 60,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.image_not_supported, color: Colors.white54, size: 40);
-              },
+              child: Center(
+                child: Icon(
+                  icone,
+                  size: 40,
+                  color: corIcone,
+                  shadows: [
+                    Shadow(color: corIcone, blurRadius: 15),
+                    const Shadow(color: Colors.white54, blurRadius: 5),
+                  ],
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),
