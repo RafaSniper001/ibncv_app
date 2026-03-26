@@ -96,13 +96,12 @@ class _BibliaScreenState extends State<BibliaScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // Seletores Neon
-                  NeonCard(
-                    glowColor: const Color(0xFF00BFFF), // Azul elétrico
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // Seletores de Vidro
+                  GlassContainer(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    borderRadius: 15,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
                           flex: 2,
@@ -197,8 +196,7 @@ class _BibliaScreenState extends State<BibliaScreen> {
                             ),
                           ),
                         ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 20),

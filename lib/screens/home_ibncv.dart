@@ -101,27 +101,41 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        // Brilho Neon Laranja
+                        // Brilho Fundo
                         Container(
-                          width: 120,
-                          height: 120,
+                          width: 130,
+                          height: 130,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFF9800).withOpacity(0.5),
-                                blurRadius: 40,
-                                spreadRadius: 5,
+                                color: const Color(0xFFFF9800).withOpacity(0.3),
+                                blurRadius: 60,
+                                spreadRadius: 10,
+                              ),
+                              BoxShadow(
+                                color: const Color(0xFF00BFFF).withOpacity(0.2), // Brilho azul de fundo
+                                blurRadius: 50,
+                                spreadRadius: -10,
                               ),
                             ],
                           ),
                         ),
-                        // Ícone da Chama
-                        const Icon(Icons.local_fire_department, size: 110, color: Color(0xFFFF9800)),
-                        // Ícone da Bíblia
-                        const Positioned(
-                          bottom: 15,
-                          child: Icon(Icons.menu_book, size: 70, color: Colors.white),
+                        // Ícone da Bíblia (Abaixo, servindo de base)
+                        Container(
+                          margin: const EdgeInsets.only(top: 40),
+                          child: Icon(Icons.menu_book, size: 80, color: const Color(0xFF00BFFF), shadows: [
+                            const Shadow(color: Color(0xFF00BFFF), blurRadius: 20),
+                            const Shadow(color: Colors.white, blurRadius: 5),
+                          ]),
+                        ),
+                        // Chama subindo saindo da bíblia (Acima)
+                        Positioned(
+                          top: 0,
+                          child: Icon(Icons.local_fire_department, size: 90, color: const Color(0xFFFF5722), shadows: [
+                            const Shadow(color: Color(0xFFFF9800), blurRadius: 30),
+                            const Shadow(color: Color(0xFFFFEB3B), blurRadius: 15),
+                          ]),
                         ),
                       ],
                     ),
