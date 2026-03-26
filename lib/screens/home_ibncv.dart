@@ -7,6 +7,7 @@ import 'oracao_screen.dart';
 import 'login_screen.dart';
 import 'contribua_screen.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/icone_futurista.dart';
 
 class HomeIBNCV extends StatefulWidget {
   const HomeIBNCV({super.key});
@@ -103,8 +104,8 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
                       children: [
                         // Brilho Fundo
                         Container(
-                          width: 130,
-                          height: 130,
+                          width: 140,
+                          height: 140,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
@@ -120,22 +121,10 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
                               ),
                             ],
                           ),
-                        ),
-                        // Ícone da Bíblia (Abaixo, servindo de base)
-                        Container(
-                          margin: const EdgeInsets.only(top: 40),
-                          child: Icon(Icons.menu_book, size: 80, color: const Color(0xFF00BFFF), shadows: [
-                            const Shadow(color: Color(0xFF00BFFF), blurRadius: 20),
-                            const Shadow(color: Colors.white, blurRadius: 5),
-                          ]),
-                        ),
-                        // Chama subindo saindo da bíblia (Acima)
-                        Positioned(
-                          top: 0,
-                          child: Icon(Icons.local_fire_department, size: 90, color: const Color(0xFFFF5722), shadows: [
-                            const Shadow(color: Color(0xFFFF9800), blurRadius: 30),
-                            const Shadow(color: Color(0xFFFFEB3B), blurRadius: 15),
-                          ]),
+                          child: Image.asset(
+                            'assets/images/icon_tema.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ],
                     ),
@@ -176,15 +165,45 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
                     childAspectRatio: 0.9,
                     physics: const NeverScrollableScrollPhysics(), // Evitar scroll duplo
                     children: [
-                      _buildNeonIconButton(Icons.church, 'IGREJA', const Color(0xFFD32F2F)),
-                      _buildNeonIconButton(Icons.video_library, 'CULTO', const Color(0xFFFF9800)),
-                      _buildNeonIconButton(Icons.campaign, 'AVISOS', const Color(0xFFFFEB3B)),
-                      _buildNeonIconButton(Icons.menu_book, 'BÍBLIA', const Color(0xFF00BFFF), destination: const BibliaScreen()),
-                      _buildNeonIconButton(Icons.volunteer_activism, 'ORAÇÕES', const Color(0xFFD32F2F), destination: const OracaoScreen()),
-                      _buildNeonIconButton(Icons.favorite, 'CONTRIBUA', const Color(0xFFFF9800), destination: const ContribuaScreen()),
-                      _buildNeonIconButton(Icons.event, 'EVENTOS', const Color(0xFFFFEB3B)),
-                      _buildNeonIconButton(Icons.groups, 'DEPARTAMENTOS', const Color(0xFF00BFFF)),
-                      _buildNeonIconButton(Icons.more_horiz, 'MAIS', Colors.white54),
+                      IconeFuturista(
+                        texto: "IGREJA",
+                        imagem: "assets/images/icon_igreja.png",
+                      ),
+                      IconeFuturista(
+                        texto: "CULTOS",
+                        imagem: "assets/images/icon_culto.png",
+                      ),
+                      IconeFuturista(
+                        texto: "AVISOS",
+                        imagem: "assets/images/icon_aviso.png",
+                      ),
+                      IconeFuturista(
+                        texto: "BÍBLIA",
+                        imagem: "assets/images/icon_biblia.png",
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BibliaScreen())),
+                      ),
+                      IconeFuturista(
+                        texto: "ORAÇÕES",
+                        imagem: "assets/images/icon_oracao.png",
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OracaoScreen())),
+                      ),
+                      IconeFuturista(
+                        texto: "CONTRIBUA",
+                        imagem: "assets/images/icon_coracao.png",
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContribuaScreen())),
+                      ),
+                      IconeFuturista(
+                        texto: "EVENTOS",
+                        imagem: "assets/images/icon_evento.png",
+                      ),
+                      IconeFuturista(
+                        texto: "DEPARTAMENTOS",
+                        imagem: "assets/images/icon_grupo.png",
+                      ),
+                      IconeFuturista(
+                        texto: "MAIS",
+                        imagem: "assets/images/icon_mais.png",
+                      ),
                     ],
                   ),
                 ),
@@ -195,63 +214,6 @@ class _HomeIBNCVState extends State<HomeIBNCV> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildNeonIconButton(IconData icon, String label, Color glowColor, {Widget? destination}) {
-    return GestureDetector(
-      onTap: () {
-        if (destination != null) {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => destination));
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: glowColor.withOpacity(0.2),
-              blurRadius: 15,
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: glowColor.withOpacity(0.4),
-                  width: 1.2,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon, size: 36, color: glowColor, shadows: [
-                    Shadow(color: glowColor, blurRadius: 10),
-                  ]),
-                  const SizedBox(height: 8),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.montserrat(
-                      fontSize: 9,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }
