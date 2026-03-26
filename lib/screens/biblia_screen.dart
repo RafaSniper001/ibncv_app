@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/glass_container.dart';
 import '../theme/tema_ibncv.dart';
+import '../widgets/neon_card.dart';
 
 class BibliaScreen extends StatefulWidget {
   const BibliaScreen({super.key});
@@ -95,12 +96,13 @@ class _BibliaScreenState extends State<BibliaScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // Seletores de Vidro
-                  GlassContainer(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    borderRadius: 15,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // Seletores Neon
+                  NeonCard(
+                    glowColor: const Color(0xFF00BFFF), // Azul elétrico
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
                           flex: 2,
@@ -252,6 +254,12 @@ class _BibliaScreenState extends State<BibliaScreen> {
                                                     fontSize: 18,
                                                     height: 1.6,
                                                     color: Colors.white.withOpacity(0.9),
+                                                    shadows: [
+                                                      const Shadow(
+                                                        color: Color(0xFF00BFFF),
+                                                        blurRadius: 5.0,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ],

@@ -43,6 +43,40 @@ class _OracaoScreenState extends State<OracaoScreen> {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erro inesperado: $e'), backgroundColor: Colors.red));
     }
   }
+  Widget _buildNeonTextField(String label, TextEditingController controller, Color neonColor, {int maxLines = 1}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: GoogleFonts.montserrat(color: neonColor, fontSize: 10, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(color: neonColor.withOpacity(0.1), blurRadius: 10, spreadRadius: 1),
+            ],
+          ),
+          child: TextFormField(
+            controller: controller,
+            maxLines: maxLines,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.black.withOpacity(0.5),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: neonColor.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: neonColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            validator: (value) => value == null || value.isEmpty ? 'Por favor, preencha este campo' : null,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,30 +108,9 @@ class _OracaoScreenState extends State<OracaoScreen> {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 30),
-                          TextFormField(
-                            controller: _nomeController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Seu Nome',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.person, color: Colors.white70),
-                            ),
-                            validator: (value) => value!.isEmpty ? 'Por favor, informe seu nome' : null,
-                          ),
+                          _buildNeonTextField('SEU NOME', _nomeController, const Color(0xFFD32F2F)),
                           const SizedBox(height: 20),
-                          TextFormField(
-                            controller: _pedidoController,
-                            maxLines: 5,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Seu Pedido de Oração',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.volunteer_activism, color: Colors.white70),
-                            ),
-                            validator: (value) => value!.isEmpty ? 'Por favor, descreva seu pedido' : null,
-                          ),
+                          _buildNeonTextField('SEU PEDIDO DE ORAÇÃO', _pedidoController, const Color(0xFFFF9800), maxLines: 5),
                           const SizedBox(height: 40),
                           ElevatedButton(
                             onPressed: _enviando ? null : _enviarPedido,
